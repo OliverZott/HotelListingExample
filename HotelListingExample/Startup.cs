@@ -30,7 +30,7 @@ namespace HotelListingExample
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "HotelListingExample", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "HotelListingExample", Version = "v1", Description = "First ASP.NET example project (Reference: udemy-course)" });
             });
         }
 
