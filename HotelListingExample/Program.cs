@@ -17,12 +17,26 @@ namespace HotelListingExample
         {
             Log.Logger = new LoggerConfiguration()
                 .WriteTo.File(
-                path: "C:\\Users\\HAL9000\\source\\repos\\HotelListingExample\\HotelListingExample\\Logs\\log-.txt",
-                outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
-                rollingInterval: RollingInterval.Day,
-                restrictedToMinimumLevel: LogEventLevel.Information
+                    path: "C:\\Users\\HAL9000\\source\\repos\\HotelListingExample\\HotelListingExample\\Logs\\log-.txt",
+                    outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
+                    rollingInterval: RollingInterval.Day,
+                    restrictedToMinimumLevel: LogEventLevel.Information
                 ).CreateLogger();
-            CreateHostBuilder(args).Build().Run();
+
+            try
+            {
+                Log.Information("Application is starting");
+                CreateHostBuilder(args).Build().Run();
+            }
+            catch (Exception ex)
+            {
+                Log.Fatal(ex, "Application failed to start");
+            }
+            finally
+            {
+                Log.CloseAndFlush();
+            }
+            
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
