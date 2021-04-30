@@ -1,0 +1,36 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
+
+namespace HotelListingExample.IRepository
+{
+    /// <summary>
+    ///  Generic base repository for CRUD operations in this project!
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public interface IGenericRepository<T> where T : class
+    {
+        // "Task<>" for asynchronous programming
+        Task<IList<T>> GetAll(
+            Expression<Func<T, bool>> expression = null,
+            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+            List<string> include = null
+        );
+
+        Task<T> Get(Expression<Func<T, bool>> expression, List<string> includes = null);
+
+        Task Insert(T entity);
+
+        Task InsertRange(IEnumerable<T> entities);
+
+        Task Delete(int id);
+
+        Task DeleteRange(IEnumerable<T> entities);
+
+        Task Update(T entitiy);
+
+
+    }
+}
