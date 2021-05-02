@@ -27,9 +27,9 @@ namespace HotelListingExample.IRepository
 
         Task Delete(int id);
 
-        Task DeleteRange(IEnumerable<T> entities);
+        void DeleteRange(IEnumerable<T> entities);
 
-        Task Update(T entitiy);
+        void Update(T entitiy);
 
 
     }
