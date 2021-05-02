@@ -1,18 +1,12 @@
+using HotelListingExample.Configurations;
 using HotelListingExample.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace HotelListingExample
 {
@@ -40,7 +34,7 @@ namespace HotelListingExample
             });
 
 
-            services.AddCors(service => 
+            services.AddCors(service =>
             {
                 service.AddPolicy("AllowAll", builder =>
                 {
@@ -48,6 +42,7 @@ namespace HotelListingExample
                 });
             });
 
+            services.AddAutoMapper(typeof(MapperInitializer));
 
             services.AddControllers();
 
