@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace HotelListingExample.Repository
@@ -16,47 +17,80 @@ namespace HotelListingExample.Repository
         private readonly DbSet<T> _db;
 
 
-        // Here the parameter accesses the Service which is registered in Startup.cs
+        // Here the parameter accesses the Service (copy of it?) which is registered in Startup.cs
         public GenericRepository(DatabaseContext context)
         {
             _context = context;
             this._db = _context.Set<T>();   // not the same from the DatabaseContext ???
         }
 
-
-        public Task Delete(int id)
+        public async Task Delete(int id)
         {
-            throw new NotImplementedException();
+            var entity = await _db.FindAsync(id);       // why user async here ???
+            _db.Remove(entity);
         }
 
-        public Task DeleteRange(IEnumerable<T> entities)
+        public void DeleteRange(IEnumerable<T> entities)
         {
-            throw new NotImplementedException();
+            _db.RemoveRange(entities);                  // why no async here ???
         }
 
-        public Task<T> Get(System.Linq.Expressions.Expression<Func<T, bool>> expression, List<string> includes = null)
+        public async Task<T> Get(Expression<Func<T, bool>> expression, List<string> includes = null)
         {
-            throw new NotImplementedException();
+            IQueryable<T> query = _db;      // Why not use _db directly ???
+
+            // Optional "includes" parameter will get Foreign Key object as well without making an additional query manually
+            if (includes != null)
+            {
+                foreach (var includeProperty in includes)
+                {
+                    query = query.Include(includeProperty);
+                }
+            }
+
+            return await query.AsNoTracking().FirstOrDefaultAsync(expression);      // Using lambda expression to define what we want to find
         }
 
-        public Task<IList<T>> GetAll(System.Linq.Expressions.Expression<Func<T, bool>> expression = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, List<string> include = null)
+        public async Task<IList<T>> GetAll(Expression<Func<T, bool>> expression = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, List<string> includes = null)
         {
-            throw new NotImplementedException();
+            IQueryable<T> query = _db;      // Why not use _db directly ???
+
+            if (expression != null)
+            {
+                query = query.Where(expression);
+            }
+
+            if (includes != null)
+            {
+                foreach (var includeProperty in includes)
+                {
+                    query = query.Include(includeProperty);
+                }
+            }
+
+            if (orderBy != null)
+            {
+                query = orderBy(query);
+            }
+
+            return await query.AsNoTracking().ToListAsync();
         }
 
-        public Task Insert(T entity)
+        public async Task Insert(T entity)
         {
-            throw new NotImplementedException();
+            await _db.AddAsync(entity);
         }
 
-        public Task InsertRange(IEnumerable<T> entities)
+        public async Task InsertRange(IEnumerable<T> entities)
         {
-            throw new NotImplementedException();
+            await _db.AddRangeAsync(entities);
         }
 
-        public Task Update(T entitiy)
+        // Attach is used because AsNotTracking is user ?!
+        public void Update(T entitiy)
         {
-            throw new NotImplementedException();
+            _db.Attach(entitiy);            // means: "pay attention to this entity" Adding change-detection
+            _context.Entry(entitiy).State = EntityState.Modified;
         }
     }
 }
