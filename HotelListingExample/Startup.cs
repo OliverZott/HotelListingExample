@@ -46,7 +46,7 @@ namespace HotelListingExample
 
             services.AddAutoMapper(typeof(MapperInitializer));
 
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(op => op.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
