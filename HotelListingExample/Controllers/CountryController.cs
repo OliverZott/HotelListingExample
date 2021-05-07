@@ -1,11 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using HotelListingExample.IRepository;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using HotelListingExample.IRepository;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Threading.Tasks;
 
 namespace HotelListingExample.Controllers
 {
@@ -27,7 +24,7 @@ namespace HotelListingExample.Controllers
         {
             try
             {
-                var countries = _unitOfWork.Countries.GetAll();
+                var countries = await _unitOfWork.Countries.GetAll();
                 return Ok(countries);
             }
             catch (Exception e)
