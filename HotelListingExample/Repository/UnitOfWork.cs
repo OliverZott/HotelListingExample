@@ -15,7 +15,7 @@ namespace HotelListingExample.Repository
 
         public UnitOfWork(DatabaseContext context)
         {
-            this._context = context;
+            _context = context;
         }
 
 
@@ -32,7 +32,7 @@ namespace HotelListingExample.Repository
 
         public void Dispose()
         {
-            _context.Dispose();     // if Dispose is called, dispose of context, kill any memory of connection/resources, ... and use Garbage COllector
+            _context.Dispose();     // if Dispose is called, dispose of context, kill any memory of connection/resources, ... and use Garbage Collector
             GC.SuppressFinalize(this);
         }
 

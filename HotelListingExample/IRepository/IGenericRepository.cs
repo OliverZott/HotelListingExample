@@ -29,7 +29,7 @@ namespace HotelListingExample.IRepository
 
         void DeleteRange(IEnumerable<T> entities);
 
-        void Update(T entitiy);
+        void Update(T entity);
 
 
     }

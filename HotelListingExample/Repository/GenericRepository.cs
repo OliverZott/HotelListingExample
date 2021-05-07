@@ -21,7 +21,7 @@ namespace HotelListingExample.Repository
         public GenericRepository(DatabaseContext context)
         {
             _context = context;
-            this._db = _context.Set<T>();   // not the same from the DatabaseContext ???
+            this._db = _context.Set<T>();   // creating DbSet entity for querying database
         }
 
         public async Task Delete(int id)
@@ -86,11 +86,11 @@ namespace HotelListingExample.Repository
             await _db.AddRangeAsync(entities);
         }
 
-        // Attach is used because AsNotTracking is user ?!
-        public void Update(T entitiy)
+        // Attach is used because AsNotTracking is used ?!
+        public void Update(T entity)
         {
-            _db.Attach(entitiy);            // means: "pay attention to this entity" Adding change-detection
-            _context.Entry(entitiy).State = EntityState.Modified;
+            _db.Attach(entity);            // means: "pay attention to this entity" Adding change-detection
+            _context.Entry(entity).State = EntityState.Modified;
         }
     }
 }

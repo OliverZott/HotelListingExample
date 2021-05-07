@@ -6,7 +6,7 @@ namespace HotelListingExample.IRepository
 {
     // Service class that registers all versions of generic repository implementation 
     // for generic class T.
-    interface IUnitOfWork : IDisposable
+    public interface IUnitOfWork : IDisposable
     {
         IGenericRepository<Country> Countries { get; }
         IGenericRepository<Hotel> Hotels { get; }
