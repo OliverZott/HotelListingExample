@@ -1,5 +1,7 @@
 using HotelListingExample.Configurations;
 using HotelListingExample.Data;
+using HotelListingExample.IRepository;
+using HotelListingExample.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -46,6 +48,8 @@ namespace HotelListingExample
 
             services.AddControllers();
 
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -67,6 +71,7 @@ namespace HotelListingExample
 
             app.UseEndpoints(endpoints =>
             {
+                //endpoints.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}");    // specific controller convention
                 endpoints.MapControllers();
             });
 
