@@ -1,7 +1,10 @@
-﻿using HotelListingExample.IRepository;
+﻿using AutoMapper;
+using HotelListingExample.IRepository;
+using HotelListingExample.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace HotelListingExample.Controllers
@@ -12,11 +15,13 @@ namespace HotelListingExample.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<CountryController> _logger;
+        private readonly IMapper _mapper;
 
-        public CountryController(IUnitOfWork unitOfWork, ILogger<CountryController> logger)
+        public CountryController(IUnitOfWork unitOfWork, ILogger<CountryController> logger, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _logger = logger;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -25,7 +30,8 @@ namespace HotelListingExample.Controllers
             try
             {
                 var countries = await _unitOfWork.Countries.GetAll();
-                return Ok(countries);
+                var result = _mapper.Map<IList<CountryDto>>(countries);
+                return Ok(result);
             }
             catch (Exception e)
             {
