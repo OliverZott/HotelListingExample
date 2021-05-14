@@ -13,9 +13,9 @@ namespace HotelListingExample.Controllers
     [ApiController]
     public class CountryController : ControllerBase
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<CountryController> _logger;
         private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
 
         public CountryController(IUnitOfWork unitOfWork, ILogger<CountryController> logger, IMapper mapper)
         {
@@ -25,7 +25,7 @@ namespace HotelListingExample.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetCountries()     // where put await? It's already in the GetAll() method which is called inside!
+        public async Task<IActionResult> GetCountries() // why await? already in the GetAll()
         {
             try
             {
@@ -38,10 +38,22 @@ namespace HotelListingExample.Controllers
                 _logger.LogError(e, $"Something went wrong in {nameof(GetCountries)}. Error message: {e.Message}");
                 return StatusCode(500, "Internal Server Error. Sorry :)");
             }
-
         }
 
-
-
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetCountry(int id)
+        {
+            try
+            {
+                var country = await _unitOfWork.Countries.Get(q => q.Id == id, new List<string> { "Hotels" });
+                var result = _mapper.Map<CountryDto>(country);
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, $"Something went wrong in {nameof(GetCountry)}. Error message: {e.Message}");
+                return StatusCode(500, "Internal Server Error. Sorry :)");
+            }
+        }
     }
 }
