@@ -1,10 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace HotelListingExample.Data
 {
     // Bridge between Entities and actual database
-    public class DatabaseContext : DbContext
+    public class DatabaseContext : IdentityDbContext
     {
 
         public DatabaseContext(DbContextOptions dbContextOptions) : base(dbContextOptions)
@@ -18,6 +19,7 @@ namespace HotelListingExample.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Country>().HasData(
                 new Country
                 {
