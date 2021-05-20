@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 namespace HotelListingExample.Data
 {
     // Bridge between Entities and actual database
-    public class DatabaseContext : IdentityDbContext
+    public class DatabaseContext : IdentityDbContext<ApiUser>
     {
 
         public DatabaseContext(DbContextOptions dbContextOptions) : base(dbContextOptions)

@@ -29,6 +29,8 @@ namespace HotelListingExample
                 options.UseSqlServer(Configuration.GetConnectionString("sqlConnection"))
             );
 
+            services.AddAuthentication();
+            services.ConfigureIdentity();
 
             services.AddSwaggerGen(c =>
             {
