@@ -1,9 +1,11 @@
 using HotelListingExample.Configurations;
+using HotelListingExample.Configurations.Entities;
 using HotelListingExample.Data;
 using HotelListingExample.IRepository;
 using HotelListingExample.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -51,6 +53,7 @@ namespace HotelListingExample
             services.AddControllers().AddNewtonsoftJson(op => op.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<IEntityTypeConfiguration<IdentityRole>, RoleConfiguration>();
 
         }
 
