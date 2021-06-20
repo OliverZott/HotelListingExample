@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 namespace HotelListingExample.Data
 {
     // Bridge between Entities and actual database
+    // Configuration files can be found in /HotelListingExample/Configurations/... 
+    // configs classes either instantiated here directly or registered in Startup.cs for DI
     public class DatabaseContext : IdentityDbContext<ApiUser>
     {
         private readonly IEntityTypeConfiguration<IdentityRole> _configuration;

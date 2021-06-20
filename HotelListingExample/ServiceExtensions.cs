@@ -1,6 +1,11 @@
 ﻿using HotelListingExample.Data;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using System;
+using System.Text;
 
 namespace HotelListingExample
 {
@@ -28,6 +33,33 @@ namespace HotelListingExample
                 })
                 .AddEntityFrameworkStores<DatabaseContext>()
                 .AddDefaultTokenProviders();
+        }
+
+
+        public static void ConfigureJwt(this IServiceCollection serviceCollection, IConfiguration configuration)
+        {
+            var jwtSettings = configuration.GetSection("Jwt");
+            var key = Environment.GetEnvironmentVariable("KEY");    // the env var, set in windows by 'setx KEY "..." /m'
+
+            serviceCollection
+                .AddAuthentication(o =>
+                    {
+                        o.DefaultAuthenticateScheme =
+                            JwtBearerDefaults
+                                .AuthenticationScheme; // if someone trying to authenticate --> check for bearer token
+                        o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                    })
+                .AddJwtBearer(o =>
+                    {
+                        o.TokenValidationParameters = new TokenValidationParameters
+                        {
+                            ValidateIssuer = true,
+                            ValidateLifetime = true,
+                            ValidateIssuerSigningKey = true,
+                            ValidIssuer = jwtSettings.GetSection("Issuer").Value,
+                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key))
+                        };
+                    });
         }
     }
 
