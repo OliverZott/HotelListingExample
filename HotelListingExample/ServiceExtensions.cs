@@ -36,17 +36,15 @@ namespace HotelListingExample
         }
 
 
-        public static void ConfigureJwt(this IServiceCollection serviceCollection, IConfiguration configuration)
+        public static void ConfigureJwt(this IServiceCollection services, IConfiguration configuration)
         {
             var jwtSettings = configuration.GetSection("Jwt");
-            var key = Environment.GetEnvironmentVariable("KEY");    // the env var, set in windows by 'setx KEY "..." /m'
+            var key = Environment.GetEnvironmentVariable("KEY");    // the env-var, set in windows by 'setx KEY "..." /m'
 
-            serviceCollection
+            services
                 .AddAuthentication(o =>
                     {
-                        o.DefaultAuthenticateScheme =
-                            JwtBearerDefaults
-                                .AuthenticationScheme; // if someone trying to authenticate --> check for bearer token
+                        o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme; // if someone trying to authenticate --> check for bearer token
                         o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                     })
                 .AddJwtBearer(o =>

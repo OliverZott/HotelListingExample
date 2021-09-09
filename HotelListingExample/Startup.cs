@@ -3,6 +3,7 @@ using HotelListingExample.Configurations.Entities;
 using HotelListingExample.Data;
 using HotelListingExample.IRepository;
 using HotelListingExample.Repository;
+using HotelListingExample.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -16,12 +17,12 @@ namespace HotelListingExample
 {
     public class Startup
     {
+        private IConfiguration Configuration { get; }
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
-
-        private IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -54,7 +55,8 @@ namespace HotelListingExample
             services.AddControllers().AddNewtonsoftJson(op => op.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
-            services.AddTransient<IEntityTypeConfiguration<IdentityRole>, RoleConfiguration>();
+            services.AddTransient<IEntityTypeConfiguration<IdentityRole>, RoleConfiguration>();  // not necessary, but used in db context
+            services.AddScoped<IAuthManager, AuthManager>();
 
         }
 
