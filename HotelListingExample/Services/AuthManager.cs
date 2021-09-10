@@ -1,5 +1,4 @@
-﻿using AutoMapper.Configuration;
-using HotelListingExample.Data;
+﻿using HotelListingExample.Data;
 using HotelListingExample.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
@@ -9,6 +8,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 
 namespace HotelListingExample.Services
 {
@@ -37,15 +37,28 @@ namespace HotelListingExample.Services
         {
             var signingCredentials = GetSigningCredentials();
             var claims = await GetClaims();
-            var tokenOptions = GenerateTokenOptions(signingCredentials, claims);
+            var token = GenerateToken(signingCredentials, claims);
 
-            return new JwtSecurityTokenHandler().WriteToken(tokenOptions);
+            return new JwtSecurityTokenHandler().WriteToken(token);
 
         }
 
-        private static JwtSecurityToken GenerateTokenOptions(SigningCredentials signingCredentials, List<Claim> claims)
+        private JwtSecurityToken GenerateToken(SigningCredentials signingCredentials, List<Claim> claims)
         {
-            throw new NotImplementedException();
+            var jwtSettings = _configuration.GetSection("Jwt");
+
+            var expirationTime = Convert.ToInt32(jwtSettings.GetSection("lifetime").Value);
+            var expireMinutes = TimeSpan.FromMinutes(expirationTime);
+
+            var token = new JwtSecurityToken(
+                issuer: jwtSettings.GetSection("ValidIssuer").Value,
+                claims: claims,
+                expires: expireMinutes,
+                signingCredentials: signingCredentials
+            );
+
+            return token;
+
         }
 
         private static SigningCredentials GetSigningCredentials()
