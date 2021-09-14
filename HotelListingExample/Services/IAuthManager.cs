@@ -5,7 +5,7 @@ namespace HotelListingExample.Services
 {
     public interface IAuthManager
     {
-        Task<bool> ValidateUser(UserDto userDto);
+        Task<bool> ValidateUser(LoginUserDto userDto);
         Task<string> CreateToken();
     }
 }

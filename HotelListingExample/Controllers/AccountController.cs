@@ -16,7 +16,6 @@ namespace HotelListingExample.Controllers
     public class AccountController : Controller
     {
         private readonly UserManager<ApiUser> _userManager;
-        private readonly SignInManager<ApiUser> _signInManager;
         private readonly ILogger<AccountController> _logger;
         private readonly IMapper _mapper;
         private readonly IAuthManager _authManager;
@@ -24,13 +23,11 @@ namespace HotelListingExample.Controllers
 
         public AccountController(
             UserManager<ApiUser> userManager,
-            SignInManager<ApiUser> signInManager,
             ILogger<AccountController> logger,
             IMapper mapper,
             IAuthManager authManager)
         {
             _userManager = userManager;
-            _signInManager = signInManager;
             _logger = logger;
             _mapper = mapper;
             _authManager = authManager;
@@ -79,7 +76,7 @@ namespace HotelListingExample.Controllers
         // checked if user is valid and return a token.
         [HttpPost]
         [Route("login")]
-        public async Task<IActionResult> Login([FromBody] UserDto loginUserDto)
+        public async Task<IActionResult> Login([FromBody] LoginUserDto loginUserDto)
         {
             _logger.LogInformation($"Login attempt for {loginUserDto.Email}");
 
@@ -94,9 +91,10 @@ namespace HotelListingExample.Controllers
                 {
                     return Unauthorized(loginUserDto);
                 }
-                var token = _authManager.CreateToken();
-                return Accepted(new { Token = _authManager.CreateToken() });
+
+                //var token = await _authManager.CreateToken();
                 //return Accepted(token);
+                return Accepted(new { Token = await _authManager.CreateToken() });
             }
             catch (Exception e)
             {
