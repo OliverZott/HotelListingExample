@@ -1,6 +1,7 @@
 ﻿using HotelListingExample.Data;
 using HotelListingExample.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,6 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
 
 namespace HotelListingExample.Services
 {
@@ -47,13 +47,12 @@ namespace HotelListingExample.Services
         {
             var jwtSettings = _configuration.GetSection("Jwt");
 
-            var expirationTime = Convert.ToInt32(jwtSettings.GetSection("lifetime").Value);
-            var expireMinutes = TimeSpan.FromMinutes(expirationTime);
+            var expirationDateTime = DateTime.Now.AddMinutes(Convert.ToInt32(jwtSettings.GetSection("lifetime").Value));
 
             var token = new JwtSecurityToken(
                 issuer: jwtSettings.GetSection("ValidIssuer").Value,
                 claims: claims,
-                expires: expireMinutes,
+                expires: expirationDateTime,
                 signingCredentials: signingCredentials
             );
 
