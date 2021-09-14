@@ -12,7 +12,7 @@ namespace HotelListingExample
         {
             Log.Logger = new LoggerConfiguration()
                 .WriteTo.File(
-                    path: "C:\\Users\\HAL9000\\source\\repos\\HotelListingExample\\HotelListingExample\\Logs\\log-.txt",
+                    path: "C:\\Users\\HAL9000\\source\\repos\\HotelListingExample\\HotelListingExample\\Logs\\log-.log",
                     outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
                     rollingInterval: RollingInterval.Day,
                     restrictedToMinimumLevel: LogEventLevel.Information
