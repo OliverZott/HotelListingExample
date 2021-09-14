@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using HotelListingExample.Data;
 using HotelListingExample.Models;
+using HotelListingExample.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -14,21 +16,26 @@ namespace HotelListingExample.Controllers
     public class AccountController : Controller
     {
         private readonly UserManager<ApiUser> _userManager;
-        //private readonly SignInManager<ApiUser> _signInManager;
+        private readonly SignInManager<ApiUser> _signInManager;
         private readonly ILogger<AccountController> _logger;
         private readonly IMapper _mapper;
+        private readonly IAuthManager _authManager;
+
 
         public AccountController(
             UserManager<ApiUser> userManager,
-            //SignInManager<ApiUser> signInManager,
+            SignInManager<ApiUser> signInManager,
             ILogger<AccountController> logger,
-            IMapper mapper)
+            IMapper mapper,
+            IAuthManager authManager)
         {
             _userManager = userManager;
-            //_signInManager = signInManager;
+            _signInManager = signInManager;
             _logger = logger;
             _mapper = mapper;
+            _authManager = authManager;
         }
+
 
         [HttpPost]
         [Route("register")]
@@ -64,40 +71,38 @@ namespace HotelListingExample.Controllers
             }
             catch (Exception e)
             {
-                _logger.LogError(e, $"Something went wrong in the {nameof(Register)}");
+                _logger.LogError(e, message: $"Something went wrong in the {nameof(Register)}");
                 return Problem($"Something went wrong in the {nameof(Register)}", statusCode: 500);
             }
         }
 
+        // checked if user is valid and return a token.
+        [HttpPost]
+        [Route("login")]
+        public async Task<IActionResult> Login([FromBody] UserDto loginUserDto)
+        {
+            _logger.LogInformation($"Login attempt for {loginUserDto.Email}");
 
-        //[HttpPost]
-        //[Route("login")]
-        //public async Task<IActionResult> Login([FromBody] LoginUserDto loginUserDto)
-        //{
-        //    _logger.LogInformation($"Login attempt for {loginUserDto.Email}");
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);      // depending on validation constraints inside UserDTO
-        //    }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);      // depending on validation constraints inside UserDTO
+            }
 
-        //    try
-        //    {
-        //        var result = await _signInManager
-        //            .PasswordSignInAsync(loginUserDto.Email, loginUserDto.Password, false, false);
-        //        if (!result.Succeeded)
-        //        {
-        //            return Unauthorized(loginUserDto);
-        //        }
-
-        //        return Accepted();
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        _logger.LogError(e, $"Something went wrong in {nameof(Login)}");
-        //        return StatusCode(StatusCodes.Status500InternalServerError, $"Something went wrong in {nameof(Login)}");
-        //    }
-
-
-        //}
+            try
+            {
+                if (!await _authManager.ValidateUser(loginUserDto))
+                {
+                    return Unauthorized(loginUserDto);
+                }
+                var token = _authManager.CreateToken();
+                return Accepted(new { Token = _authManager.CreateToken() });
+                //return Accepted(token);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, $"Something went wrong in {nameof(Login)}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Something went wrong in {nameof(Login)}");
+            }
+        }
     }
 }

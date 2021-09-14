@@ -26,7 +26,7 @@ namespace HotelListingExample.Services
             _configuration = configuration;
         }
 
-        // Does user exist and is password correct ?
+        // Checks if user exists and if password is correct.
         public async Task<bool> ValidateUser(UserDto userDto)
         {
             _user = await _userManager.FindByNameAsync(userDto.Email);
