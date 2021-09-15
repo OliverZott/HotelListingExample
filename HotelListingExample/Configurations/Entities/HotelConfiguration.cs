@@ -30,7 +30,7 @@ namespace HotelListingExample.Configurations.Entities
                     Id = 3,
                     Name = "Hotel Three",
                     Address = "Address Three",
-                    CountryId = 1,
+                    CountryId = 2,
                     Rating = 4.0
                 }
             );

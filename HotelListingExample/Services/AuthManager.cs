@@ -43,6 +43,7 @@ namespace HotelListingExample.Services
 
         }
 
+        // JWT contains issuer validation!!
         private JwtSecurityToken GenerateToken(SigningCredentials signingCredentials, List<Claim> claims)
         {
             var jwtSettings = _configuration.GetSection("Jwt");
@@ -50,7 +51,7 @@ namespace HotelListingExample.Services
             var expirationDateTime = DateTime.Now.AddMinutes(Convert.ToInt32(jwtSettings.GetSection("lifetime").Value));
 
             var token = new JwtSecurityToken(
-                issuer: jwtSettings.GetSection("ValidIssuer").Value,
+                issuer: jwtSettings.GetSection("Issuer").Value,
                 claims: claims,
                 expires: expirationDateTime,
                 signingCredentials: signingCredentials
