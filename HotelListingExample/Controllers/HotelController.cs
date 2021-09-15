@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HotelListingExample.Controllers
 {
@@ -43,6 +44,7 @@ namespace HotelListingExample.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
