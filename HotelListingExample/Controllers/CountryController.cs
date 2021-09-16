@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using HotelListingExample.Data;
 using HotelListingExample.IRepository;
 using HotelListingExample.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -53,6 +54,60 @@ namespace HotelListingExample.Controllers
             {
                 _logger.LogError(e, $"Something went wrong in {nameof(GetCountry)}. Error message: {e.Message}");
                 return StatusCode(500, "Internal Server Error. Sorry :)");
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateCountry([FromBody] CreateCountryDto createCountryDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                _logger.LogError($"Invalid POST attempt in {nameof(CreateCountry)}.");
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                var country = _mapper.Map<Country>(createCountryDto);
+                await _unitOfWork.Countries.Insert(country);
+                await _unitOfWork.Save();
+                return Accepted("Nice :)");
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, $"Something went wrong in {nameof(CreateCountry)}. Error message: {e.Message}");
+                return StatusCode(500, "Internal Server Error. Sorry :)");
+            }
+        }
+
+
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> UpdateCountry(int id, [FromBody] UpdateCountryDto updateCountryDto)
+        {
+            if (!ModelState.IsValid || id < 1)
+            {
+                _logger.LogError($"Invalid PUT attempt in {nameof(UpdateCountry)}.\nModel State: {ModelState}");
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                var country = await _unitOfWork.Countries.Get(q => q.Id == id);
+                if (country == null)
+                {
+                    _logger.LogError($"Invalid PUT attempt in {nameof(UpdateCountry)}. No Country with Id {id} found!");
+                    return BadRequest(ModelState);
+                }
+
+                _mapper.Map(updateCountryDto, country);
+                _unitOfWork.Countries.Update(country);
+                await _unitOfWork.Save();
+                return NoContent();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, $"Something went wrong in {nameof(UpdateCountry)}. Error message: {e.Message}");
+                return StatusCode(500, $"Internal Server Error. Problem in {nameof(UpdateCountry)} Sorry :)");
             }
         }
     }

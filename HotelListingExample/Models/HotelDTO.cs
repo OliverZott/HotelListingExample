@@ -16,14 +16,19 @@ namespace HotelListingExample.Models
         [Range(1, 5)]
         public double Rating { get; set; }
 
-        [Required]
+        //[Required]
         public int CountryId { get; set; }
+    }
+
+    public class UpdateHotelDto : CreateHotelDto
+    {
+
     }
 
     public class HotelDto : CreateHotelDto
     {
         public int Id { get; set; }
 
-        public CountryDto Country { get; set; }
+        public CreateCountryDto Country { get; set; }
     }
 }
