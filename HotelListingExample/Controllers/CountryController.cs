@@ -27,11 +27,11 @@ namespace HotelListingExample.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetCountries() // why await? already in the GetAll()
+        public async Task<IActionResult> GetCountries([FromQuery] RequestParams requestParams) // why await? already in the GetAll()
         {
             try
             {
-                var countries = await _unitOfWork.Countries.GetAll();
+                var countries = await _unitOfWork.Countries.GetAll(requestParams);
                 var result = _mapper.Map<IList<CountryDto>>(countries);
                 return Ok(result);
             }
