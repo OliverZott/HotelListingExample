@@ -127,5 +127,39 @@ namespace HotelListingExample.Controllers
             }
         }
 
+        [Authorize]
+        [HttpDelete("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> DeleteHotel(int id)
+        {
+            if (id < 1)
+            {
+                _logger.LogError($"{nameof(DeleteHotel)}: Id is not valid.");
+                return BadRequest("Damn, 400 BadRequest i guess");
+            }
+
+            try
+            {
+                var hotel = await _unitOfWork.Hotels.Get(q => q.Id == id);
+                if (hotel == null)
+                {
+                    _logger.LogError($"{nameof(DeleteHotel)}: No entity with id {id} was found.");
+                    return NotFound("Damn, didn't find that hotel :(");
+                }
+                await _unitOfWork.Hotels.Delete(id);
+                await _unitOfWork.Save();
+                return Ok($"MUAHAHAHA, did delete hotel with id {id}.");
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, $"Something went wrong in {nameof(DeleteHotel)}. Error message: {e.Message}");
+                return StatusCode(500, "Internal Server Error. Sorry :)");
+            }
+
+        }
+
     }
 }

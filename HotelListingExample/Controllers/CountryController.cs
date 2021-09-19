@@ -2,6 +2,7 @@
 using HotelListingExample.Data;
 using HotelListingExample.IRepository;
 using HotelListingExample.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -110,5 +111,36 @@ namespace HotelListingExample.Controllers
                 return StatusCode(500, $"Internal Server Error. Problem in {nameof(UpdateCountry)} Sorry :)");
             }
         }
+
+        [Authorize]
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteCountry(int id)
+        {
+            if (id < 1)
+            {
+                _logger.LogError($"{nameof(DeleteCountry)}: Id is not valid.");
+                return BadRequest("Damn, 400 BadRequest i guess");
+            }
+
+            try
+            {
+                var hotel = await _unitOfWork.Countries.Get(q => q.Id == id);
+                if (hotel == null)
+                {
+                    _logger.LogError($"{nameof(DeleteCountry)}: No entity with id {id} was found.");
+                    return NotFound("Damn, didn't find that country :(");
+                }
+
+                await _unitOfWork.Countries.Delete(id);
+                await _unitOfWork.Save();
+                return Ok($"MUAHAHAHA, did delete country with id {id}.");
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, $"Something went wrong in {nameof(DeleteCountry)}. Error message: {e.Message}");
+                return StatusCode(500, "Internal Server Error. Sorry :)");
+            }
+        }
+
     }
 }
