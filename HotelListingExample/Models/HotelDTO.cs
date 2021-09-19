@@ -29,6 +29,6 @@ namespace HotelListingExample.Models
     {
         public int Id { get; set; }
 
-        public CreateCountryDto Country { get; set; }
+        public CreateCountryDto Country { get; set; }  // So a Hotel by id wont return countries with hotels with countries (nested) ...
     }
 }
