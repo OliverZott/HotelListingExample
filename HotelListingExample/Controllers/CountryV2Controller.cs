@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace HotelListingExample.Controllers
 {
     [ApiVersion("2.0")]
-    [Route("api/{v:apiVersion}/country")]
+    [Route("api/country")]
     [ApiController]
     public class CountryV2Controller : ControllerBase
     {

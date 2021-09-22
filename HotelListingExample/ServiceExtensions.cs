@@ -12,6 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using System;
 using System.Text;
+using Microsoft.AspNetCore.Mvc.Versioning;
 
 namespace HotelListingExample
 {
@@ -108,6 +109,11 @@ namespace HotelListingExample
                 opt.ReportApiVersions = true;
                 opt.AssumeDefaultVersionWhenUnspecified = true;
                 opt.DefaultApiVersion = new ApiVersion(1, 0);
+
+                // reading version from Header!
+                //    - route can stay the same
+                //    - client can just add header
+                opt.ApiVersionReader = new HeaderApiVersionReader("api-version");  
 
             });
         }

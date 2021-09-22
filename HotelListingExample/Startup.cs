@@ -84,8 +84,8 @@ namespace HotelListingExample
 
             app.UseEndpoints(endpoints =>
             {
-                //endpoints.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}");    // specific controller convention
-                endpoints.MapControllers();
+                endpoints.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}");    // specific controller convention
+                //endpoints.MapControllers();
             });
 
             app.UseCors("AllowAll");
