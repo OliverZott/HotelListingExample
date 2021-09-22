@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace HotelListingExample.Controllers
 {
-    //[ApiVersion("2.0")]
-    [Route("api/[controller]")]
+    [ApiVersion("2.0")]
+    [Route("api/country")]
     [ApiController]
-    public class CountryControllerV2 : ControllerBase
+    public class CountryV2Controller : ControllerBase
     {
         private readonly DatabaseContext _databaseContext;
         private readonly DbSet<Country> _dbSet;
 
-        public CountryControllerV2(DatabaseContext databaseContext)
+        public CountryV2Controller(DatabaseContext databaseContext)
         {
             _databaseContext = databaseContext;
             _dbSet = _databaseContext.Set<Country>();
@@ -22,10 +22,12 @@ namespace HotelListingExample.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> GetCountries()
+        public IActionResult GetCountries()
         {
-            var countries = await _dbSet.AsNoTracking().ToListAsync();
-            return Ok(countries);
+            //var countries = await _dbSet.AsNoTracking().ToListAsync();
+            //return Ok(countries);
+
+            return Ok(_databaseContext.Countries);
         }
 
 
@@ -40,7 +42,9 @@ namespace HotelListingExample.Controllers
         // Difference to other controller version:
         //      - No usage of repository
         //      - returning entity without mapping on DTO!
-        //
+
+
+
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetCountry(int id)
         {
