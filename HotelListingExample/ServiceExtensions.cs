@@ -1,11 +1,16 @@
 ﻿using HotelListingExample.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Text;
+using HotelListingExample.Models;
+using Microsoft.AspNetCore.Diagnostics;
+using Serilog;
 
 namespace HotelListingExample
 {
@@ -59,6 +64,40 @@ namespace HotelListingExample
                             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key))
                         };
                     });
+        }
+
+
+        /// <summary>
+        /// Customized Exception handling:
+        /// https://docs.microsoft.com/en-us/aspnet/core/fundamentals/error-handling?view=aspnetcore-5.0
+        /// https://www.tutorialsteacher.com/core/aspnet-core-exception-handling
+        /// 
+        /// </summary>
+        /// <param name="app"></param>
+        public static void ConfigureExceptionHandler(this IApplicationBuilder app)
+        {
+            app.UseExceptionHandler(error =>
+            {
+                error.Run(async context =>
+                {
+                    context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+                    context.Response.ContentType = "application/json";
+                    var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
+                    if (contextFeature != null)
+                    {
+                        // Logging the error
+                        Log.Error($"Something went wrong in {contextFeature.Error}");
+
+                        // Generate error-model with status code and message to response body.
+                        // (defined in custom error-class)
+                        await context.Response.WriteAsync(new Error
+                        {
+                            StatusCode = context.Response.StatusCode,
+                            Message = "Internal Server Error. Sorry :)"
+                        }.ToString());
+                    }
+                });
+            });
         }
     }
 

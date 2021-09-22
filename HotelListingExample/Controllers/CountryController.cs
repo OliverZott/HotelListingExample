@@ -5,7 +5,6 @@ using HotelListingExample.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -27,35 +26,20 @@ namespace HotelListingExample.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetCountries([FromQuery] RequestParams requestParams) // why await? already in the GetAll()
+        public async Task<IActionResult> GetCountries([FromQuery] RequestParams requestParams)
         {
-            try
-            {
-                var countries = await _unitOfWork.Countries.GetAll(requestParams);
-                var result = _mapper.Map<IList<CountryDto>>(countries);
-                return Ok(result);
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e, $"Something went wrong in {nameof(GetCountries)}. Error message: {e.Message}");
-                return StatusCode(500, "Internal Server Error. Sorry :)");
-            }
+            var countries = await _unitOfWork.Countries.GetAll(requestParams);  // why await? already in the GetAll()
+            var result = _mapper.Map<IList<CountryDto>>(countries);
+            return Ok(result);
         }
 
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetCountry(int id)
         {
-            try
-            {
-                var country = await _unitOfWork.Countries.Get(q => q.Id == id, new List<string> { "Hotels" });
-                var result = _mapper.Map<CountryDto>(country);
-                return Ok(result);
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e, $"Something went wrong in {nameof(GetCountry)}. Error message: {e.Message}");
-                return StatusCode(500, "Internal Server Error. Sorry :)");
-            }
+            // throw new Exception();  / test for global exception handling and logging.
+            var country = await _unitOfWork.Countries.Get(q => q.Id == id, new List<string> { "Hotels" });
+            var result = _mapper.Map<CountryDto>(country);
+            return Ok(result);
         }
 
         [HttpPost]
@@ -67,18 +51,10 @@ namespace HotelListingExample.Controllers
                 return BadRequest(ModelState);
             }
 
-            try
-            {
-                var country = _mapper.Map<Country>(createCountryDto);
-                await _unitOfWork.Countries.Insert(country);
-                await _unitOfWork.Save();
-                return Accepted("Nice :)");
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e, $"Something went wrong in {nameof(CreateCountry)}. Error message: {e.Message}");
-                return StatusCode(500, "Internal Server Error. Sorry :)");
-            }
+            var country = _mapper.Map<Country>(createCountryDto);
+            await _unitOfWork.Countries.Insert(country);
+            await _unitOfWork.Save();
+            return Accepted("Nice :)");
         }
 
 
@@ -91,25 +67,17 @@ namespace HotelListingExample.Controllers
                 return BadRequest(ModelState);
             }
 
-            try
+            var country = await _unitOfWork.Countries.Get(q => q.Id == id);
+            if (country == null)
             {
-                var country = await _unitOfWork.Countries.Get(q => q.Id == id);
-                if (country == null)
-                {
-                    _logger.LogError($"Invalid PUT attempt in {nameof(UpdateCountry)}. No Country with Id {id} found!");
-                    return BadRequest(ModelState);
-                }
+                _logger.LogError($"Invalid PUT attempt in {nameof(UpdateCountry)}. No Country with Id {id} found!");
+                return BadRequest(ModelState);
+            }
 
-                _mapper.Map(updateCountryDto, country);
-                _unitOfWork.Countries.Update(country);
-                await _unitOfWork.Save();
-                return NoContent();
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e, $"Something went wrong in {nameof(UpdateCountry)}. Error message: {e.Message}");
-                return StatusCode(500, $"Internal Server Error. Problem in {nameof(UpdateCountry)} Sorry :)");
-            }
+            _mapper.Map(updateCountryDto, country);
+            _unitOfWork.Countries.Update(country);
+            await _unitOfWork.Save();
+            return NoContent();
         }
 
         [Authorize]
@@ -122,24 +90,18 @@ namespace HotelListingExample.Controllers
                 return BadRequest("Damn, 400 BadRequest i guess");
             }
 
-            try
-            {
-                var hotel = await _unitOfWork.Countries.Get(q => q.Id == id);
-                if (hotel == null)
-                {
-                    _logger.LogError($"{nameof(DeleteCountry)}: No entity with id {id} was found.");
-                    return NotFound("Damn, didn't find that country :(");
-                }
 
-                await _unitOfWork.Countries.Delete(id);
-                await _unitOfWork.Save();
-                return Ok($"MUAHAHAHA, did delete country with id {id}.");
-            }
-            catch (Exception e)
+            var hotel = await _unitOfWork.Countries.Get(q => q.Id == id);
+            if (hotel == null)
             {
-                _logger.LogError(e, $"Something went wrong in {nameof(DeleteCountry)}. Error message: {e.Message}");
-                return StatusCode(500, "Internal Server Error. Sorry :)");
+                _logger.LogError($"{nameof(DeleteCountry)}: No entity with id {id} was found.");
+                return NotFound("Damn, didn't find that country :(");
             }
+
+            await _unitOfWork.Countries.Delete(id);
+            await _unitOfWork.Save();
+            return Ok($"MUAHAHAHA, did delete country with id {id}.");
+
         }
 
     }
