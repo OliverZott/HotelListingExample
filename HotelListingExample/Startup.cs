@@ -54,6 +54,8 @@ namespace HotelListingExample
 
             services.AddControllers().AddNewtonsoftJson(op => op.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
+            services.ConfigureVersioning();
+
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IEntityTypeConfiguration<IdentityRole>, RoleConfiguration>();  // not necessary, but used in db context
             services.AddScoped<IAuthManager, AuthManager>();
