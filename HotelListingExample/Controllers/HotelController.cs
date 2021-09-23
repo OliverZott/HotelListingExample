@@ -28,6 +28,7 @@ namespace HotelListingExample.Controllers
         }
 
         [HttpGet]
+        [ResponseCache(Duration = 60)]
         [ProducesResponseType(200)] // For swaggger documentation
         [ProducesResponseType(StatusCodes.Status500InternalServerError)] // usage of response type CONSTANTS
         public async Task<IActionResult> GetHotels()
