@@ -1,4 +1,5 @@
-﻿using HotelListingExample.Data;
+﻿using AspNetCoreRateLimit;
+using HotelListingExample.Data;
 using HotelListingExample.Models;
 using Marvin.Cache.Headers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -13,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace HotelListingExample
@@ -133,6 +135,34 @@ namespace HotelListingExample
                     validationOpt.MustRevalidate = true;
                 });
 
+        }
+
+
+        public static void ConfigureRateLimiting(this IServiceCollection services)
+        {
+            var rateLimitRules = new List<RateLimitRule>
+            {
+                new RateLimitRule
+                {
+                    Endpoint = "*",  // Every single endpoint
+                    Limit = 1,
+                    Period = "5s"
+                }
+            };
+
+            services.Configure<IpRateLimitOptions>(opt =>
+            {
+                opt.GeneralRules = rateLimitRules;
+            });
+
+            // Code needed to support library.
+            services.AddSingleton<IRateLimitCounterStore, MemoryCacheRateLimitCounterStore>();
+            services.AddSingleton<IIpPolicyStore, MemoryCacheIpPolicyStore>();
+            services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
+
+            // due to change:
+            // https://stackoverflow.com/questions/68888612/unable-to-resolve-service-for-type-aspnetcoreratelimit-iprocessingstrategy-whi
+            services.AddSingleton<IProcessingStrategy, AsyncKeyLockProcessingStrategy>();
         }
     }
 
