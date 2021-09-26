@@ -33,7 +33,7 @@ namespace HotelListingExample
                 options.UseSqlServer(Configuration.GetConnectionString("sqlConnection"))
             );
 
-            services.AddResponseCaching();
+            services.ConfigureHttpCacheHeaders();
             services.AddAuthentication();
             services.ConfigureIdentity();
             services.ConfigureJwt(Configuration);
@@ -84,6 +84,8 @@ namespace HotelListingExample
             app.UseHttpsRedirection();
 
             app.UseResponseCaching();
+            app.UseHttpCacheHeaders();
+
             app.UseRouting();
 
             app.UseAuthentication();

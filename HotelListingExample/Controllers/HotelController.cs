@@ -2,6 +2,7 @@
 using HotelListingExample.Data;
 using HotelListingExample.IRepository;
 using HotelListingExample.Models;
+using Marvin.Cache.Headers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -28,7 +29,8 @@ namespace HotelListingExample.Controllers
         }
 
         [HttpGet]
-        [ResponseCache(Duration = 60)]
+        [ResponseCache(Duration = 60)]  // can be removed after HttpCacheHeader in ServiceExtensions is configured!
+        //[ResponseCache(CacheProfileName = "120SecondsDuration")]
         [ProducesResponseType(200)] // For swaggger documentation
         [ProducesResponseType(StatusCodes.Status500InternalServerError)] // usage of response type CONSTANTS
         public async Task<IActionResult> GetHotels()
@@ -47,7 +49,7 @@ namespace HotelListingExample.Controllers
         }
 
         [HttpGet("{id:int}", Name = "GetAHotel")]
-        [ResponseCache(CacheProfileName = "120SecondsDuration")]
+        [HttpCacheExpiration(CacheLocation = CacheLocation.Public, MaxAge = 65)]  // Override global caching configuration (serviceextensions)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetHotel(int id)
