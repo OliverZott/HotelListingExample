@@ -2,6 +2,7 @@
 using HotelListingExample.IRepository;
 using HotelListingExample.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,23 +38,20 @@ namespace HotelListingExample.Repository
             _db.RemoveRange(entities);                  // why no async here ???
         }
 
-        public async Task<T> Get(Expression<Func<T, bool>> expression, List<string> includes = null)
+        public async Task<T> Get(Expression<Func<T, bool>> expression, Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null)
         {
             IQueryable<T> query = _db;      // Why not use _db directly ???
 
             // Optional "includes" parameter will get Foreign Key object as well without making an additional query manually
-            if (includes != null)
+            if (include != null)
             {
-                foreach (var includeProperty in includes)
-                {
-                    query = query.Include(includeProperty);
-                }
+                query = include(query);
             }
 
             return await query.AsNoTracking().FirstOrDefaultAsync(expression);      // Using lambda expression to define what we want to find
         }
 
-        public async Task<IList<T>> GetAll(Expression<Func<T, bool>> expression = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, List<string> includes = null)
+        public async Task<IList<T>> GetAll(Expression<Func<T, bool>> expression = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null)
         {
             IQueryable<T> query = _db;      // Why not use _db directly ???
 
@@ -62,12 +60,9 @@ namespace HotelListingExample.Repository
                 query = query.Where(expression);
             }
 
-            if (includes != null)
+            if (include != null)
             {
-                foreach (var includeProperty in includes)
-                {
-                    query = query.Include(includeProperty);
-                }
+                query = include(query);
             }
 
             if (orderBy != null)
@@ -78,16 +73,13 @@ namespace HotelListingExample.Repository
             return await query.AsNoTracking().ToListAsync();
         }
 
-        public async Task<IPagedList<T>> GetAll(RequestParams requestParams, List<string> includes = null)
+        public async Task<IPagedList<T>> GetAll(RequestParams requestParams, Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null)
         {
             IQueryable<T> query = _db;      // Why not use _db directly ???
 
-            if (includes != null)
+            if (include != null)
             {
-                foreach (var includeProperty in includes)
-                {
-                    query = query.Include(includeProperty);
-                }
+                query = include(query);
             }
 
             return await query.AsNoTracking().ToPagedListAsync(requestParams.PageNumber, requestParams.PageSize);
