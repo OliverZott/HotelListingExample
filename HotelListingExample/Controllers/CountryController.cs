@@ -4,6 +4,7 @@ using HotelListingExample.IRepository;
 using HotelListingExample.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -37,7 +38,7 @@ namespace HotelListingExample.Controllers
         public async Task<IActionResult> GetCountry(int id)
         {
             // throw new Exception();  / test for global exception handling and logging.
-            var country = await _unitOfWork.Countries.Get(q => q.Id == id, new List<string> { "Hotels" });
+            var country = await _unitOfWork.Countries.Get(q => q.Id == id, q => q.Include(x => x.Hotels));
             var result = _mapper.Map<CountryDto>(country);
             return Ok(result);
         }
