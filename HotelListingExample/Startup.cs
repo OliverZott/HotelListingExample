@@ -83,7 +83,11 @@ namespace HotelListingExample
             }
 
             app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "HotelListingExample v1"));
+            app.UseSwaggerUI(c =>
+            {
+                var swaggerJsonBasePath = string.IsNullOrWhiteSpace(c.RoutePrefix) ? "." : "..";
+                c.SwaggerEndpoint($"{swaggerJsonBasePath}/swagger/v1/swagger.json", "Hotel Listing API");
+            });
 
             app.ConfigureExceptionHandler();
 
