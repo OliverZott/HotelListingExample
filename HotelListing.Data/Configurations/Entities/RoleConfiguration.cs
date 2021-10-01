@@ -12,7 +12,7 @@ namespace HotelListingExample.Data.Configurations.Entities
                 new IdentityRole
                 {
                     Name = "User",
-                    NormalizedName = "USER",
+                    NormalizedName = "USER"
                 },
                 new IdentityRole
                 {

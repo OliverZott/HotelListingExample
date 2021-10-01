@@ -1,13 +1,14 @@
-﻿using AutoMapper;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using AutoMapper;
+using HotelListingExample.Core.DTOs;
+using HotelListingExample.Core.Models;
+using HotelListingExample.Core.Repository;
 using HotelListingExample.Data;
-using HotelListingExample.IRepository;
-using HotelListingExample.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace HotelListingExample.Controllers
 {
@@ -29,7 +30,7 @@ namespace HotelListingExample.Controllers
         [HttpGet]
         public async Task<IActionResult> GetCountries([FromQuery] RequestParams requestParams)
         {
-            var countries = await _unitOfWork.Countries.GetAll(requestParams);  // why await? already in the GetAll()
+            var countries = await _unitOfWork.Countries.GetAll(requestParams); // why await? already in the GetAll()
             var result = _mapper.Map<IList<CountryDto>>(countries);
             return Ok(result);
         }
@@ -102,8 +103,6 @@ namespace HotelListingExample.Controllers
             await _unitOfWork.Countries.Delete(id);
             await _unitOfWork.Save();
             return Ok($"MUAHAHAHA, did delete country with id {id}.");
-
         }
-
     }
 }

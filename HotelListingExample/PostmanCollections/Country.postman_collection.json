@@ -1,315 +1,319 @@
 {
-	"info": {
-		"_postman_id": "f98fefff-c993-4b05-9e01-695a8be9ebda",
-		"name": "Country",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-	},
-	"item": [
-		{
-			"name": "Get Country Item",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoidXNlcjRAZXhhbXBsZS5jb20iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJVc2VyIiwiZXhwIjoxNjMxNzk5ODM4LCJpc3MiOiJIb3RlbExpc3RpbmdBUEkifQ.mpYHRGoLVeo5OmvpszKacAqyDMmeD8DfUbpLLZHLa5E",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "https://localhost:44306/api/country/1",
-					"protocol": "https",
-					"host": [
-						"localhost"
-					],
-					"port": "44306",
-					"path": [
-						"api",
-						"country",
-						"1"
-					]
-				},
-				"description": "Country item operation; Also retrieving Hotels List."
-			},
-			"response": []
-		},
-		{
-			"name": "Get Country Collection",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "api-version",
-						"value": "2.0",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "https://localhost:44306/api/country/",
-					"protocol": "https",
-					"host": [
-						"localhost"
-					],
-					"port": "44306",
-					"path": [
-						"api",
-						"country",
-						""
-					]
-				},
-				"description": "Collection operation retrieving all Countries."
-			},
-			"response": []
-		},
-		{
-			"name": "Get Country Collection Versioning",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "https://localhost:44306/api/country?api-version=2.0",
-					"protocol": "https",
-					"host": [
-						"localhost"
-					],
-					"port": "44306",
-					"path": [
-						"api",
-						"country"
-					],
-					"query": [
-						{
-							"key": "api-version",
-							"value": "2.0"
-						}
-					]
-				},
-				"description": "Collection operation retrieving all Countries."
-			},
-			"response": []
-		},
-		{
-			"name": "Get Country Item Versioning",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "https://localhost:44306/api/country/1?api-version=2.0",
-					"protocol": "https",
-					"host": [
-						"localhost"
-					],
-					"port": "44306",
-					"path": [
-						"api",
-						"country",
-						"1"
-					],
-					"query": [
-						{
-							"key": "api-version",
-							"value": "2.0"
-						}
-					]
-				},
-				"description": "Collection operation retrieving all Countries."
-			},
-			"response": []
-		},
-		{
-			"name": "Get Countries Pagination",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoidXNlcjRAZXhhbXBsZS5jb20iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJVc2VyIiwiZXhwIjoxNjMxNzk5ODM4LCJpc3MiOiJIb3RlbExpc3RpbmdBUEkifQ.mpYHRGoLVeo5OmvpszKacAqyDMmeD8DfUbpLLZHLa5E",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "https://localhost:44306/api/country/?pagenumber=1&pagesize=2789",
-					"protocol": "https",
-					"host": [
-						"localhost"
-					],
-					"port": "44306",
-					"path": [
-						"api",
-						"country",
-						""
-					],
-					"query": [
-						{
-							"key": "pagenumber",
-							"value": "1"
-						},
-						{
-							"key": "pagesize",
-							"value": "2789"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Insert Country",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"name\": \"Paraguya\",\r\n  \"shortName\": \"PY\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "https://localhost:44306/api/Country",
-					"protocol": "https",
-					"host": [
-						"localhost"
-					],
-					"port": "44306",
-					"path": [
-						"api",
-						"Country"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Update Country",
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"name\": \"Paraguy\",\r\n  \"shortName\": \"PY\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "https://localhost:44306/api/country/4",
-					"protocol": "https",
-					"host": [
-						"localhost"
-					],
-					"port": "44306",
-					"path": [
-						"api",
-						"country",
-						"4"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Update Country with hotel",
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"name\": \"Cayman Islands\",\r\n  \"shortName\": \"CI\",\r\n  \"hotels\": [\r\n    {\r\n      \"name\": \"Gayman Resorts\",\r\n      \"address\": \"Cayman Street 12\",\r\n      \"rating\": 3.5\r\n    },\r\n    {\r\n      \"name\": \"Resort ONE\",\r\n      \"address\": \"Cayman Street 666\",\r\n      \"rating\": 1.5\r\n    }\r\n  ]\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "https://localhost:44306/api/country/3",
-					"protocol": "https",
-					"host": [
-						"localhost"
-					],
-					"port": "44306",
-					"path": [
-						"api",
-						"country",
-						"3"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Delete Country",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoidXNlcjRAZXhhbXBsZS5jb20iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJVc2VyIiwiZXhwIjoxNjMyMDc5Mzc2LCJpc3MiOiJIb3RlbExpc3RpbmdBUEkifQ.1kSlmMppRm-yGSYYu3p8IX9jxQF-pyyfcBbzDwsGB5Q",
-							"type": "string"
-						}
-					]
-				},
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "https://localhost:44306/api/country/3",
-					"protocol": "https",
-					"host": [
-						"localhost"
-					],
-					"port": "44306",
-					"path": [
-						"api",
-						"country",
-						"3"
-					]
-				}
-			},
-			"response": []
-		}
-	]
+  "info": {
+    "_postman_id": "f98fefff-c993-4b05-9e01-695a8be9ebda",
+    "name": "Country",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Get Country Item",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value":
+                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoidXNlcjRAZXhhbXBsZS5jb20iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJVc2VyIiwiZXhwIjoxNjMxNzk5ODM4LCJpc3MiOiJIb3RlbExpc3RpbmdBUEkifQ.mpYHRGoLVeo5OmvpszKacAqyDMmeD8DfUbpLLZHLa5E",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://localhost:44306/api/country/1",
+          "protocol": "https",
+          "host": [
+            "localhost"
+          ],
+          "port": "44306",
+          "path": [
+            "api",
+            "country",
+            "1"
+          ]
+        },
+        "description": "Country item operation; Also retrieving Hotels List."
+      },
+      "response": []
+    },
+    {
+      "name": "Get Country Collection",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "api-version",
+            "value": "2.0",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "https://localhost:44306/api/country/",
+          "protocol": "https",
+          "host": [
+            "localhost"
+          ],
+          "port": "44306",
+          "path": [
+            "api",
+            "country",
+            ""
+          ]
+        },
+        "description": "Collection operation retrieving all Countries."
+      },
+      "response": []
+    },
+    {
+      "name": "Get Country Collection Versioning",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://localhost:44306/api/country?api-version=2.0",
+          "protocol": "https",
+          "host": [
+            "localhost"
+          ],
+          "port": "44306",
+          "path": [
+            "api",
+            "country"
+          ],
+          "query": [
+            {
+              "key": "api-version",
+              "value": "2.0"
+            }
+          ]
+        },
+        "description": "Collection operation retrieving all Countries."
+      },
+      "response": []
+    },
+    {
+      "name": "Get Country Item Versioning",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://localhost:44306/api/country/1?api-version=2.0",
+          "protocol": "https",
+          "host": [
+            "localhost"
+          ],
+          "port": "44306",
+          "path": [
+            "api",
+            "country",
+            "1"
+          ],
+          "query": [
+            {
+              "key": "api-version",
+              "value": "2.0"
+            }
+          ]
+        },
+        "description": "Collection operation retrieving all Countries."
+      },
+      "response": []
+    },
+    {
+      "name": "Get Countries Pagination",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value":
+                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoidXNlcjRAZXhhbXBsZS5jb20iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJVc2VyIiwiZXhwIjoxNjMxNzk5ODM4LCJpc3MiOiJIb3RlbExpc3RpbmdBUEkifQ.mpYHRGoLVeo5OmvpszKacAqyDMmeD8DfUbpLLZHLa5E",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://localhost:44306/api/country/?pagenumber=1&pagesize=2789",
+          "protocol": "https",
+          "host": [
+            "localhost"
+          ],
+          "port": "44306",
+          "path": [
+            "api",
+            "country",
+            ""
+          ],
+          "query": [
+            {
+              "key": "pagenumber",
+              "value": "1"
+            },
+            {
+              "key": "pagesize",
+              "value": "2789"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Insert Country",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"name\": \"Paraguya\",\r\n  \"shortName\": \"PY\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://localhost:44306/api/Country",
+          "protocol": "https",
+          "host": [
+            "localhost"
+          ],
+          "port": "44306",
+          "path": [
+            "api",
+            "Country"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Update Country",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"name\": \"Paraguy\",\r\n  \"shortName\": \"PY\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://localhost:44306/api/country/4",
+          "protocol": "https",
+          "host": [
+            "localhost"
+          ],
+          "port": "44306",
+          "path": [
+            "api",
+            "country",
+            "4"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Update Country with hotel",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw":
+            "{\r\n  \"name\": \"Cayman Islands\",\r\n  \"shortName\": \"CI\",\r\n  \"hotels\": [\r\n    {\r\n      \"name\": \"Gayman Resorts\",\r\n      \"address\": \"Cayman Street 12\",\r\n      \"rating\": 3.5\r\n    },\r\n    {\r\n      \"name\": \"Resort ONE\",\r\n      \"address\": \"Cayman Street 666\",\r\n      \"rating\": 1.5\r\n    }\r\n  ]\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://localhost:44306/api/country/3",
+          "protocol": "https",
+          "host": [
+            "localhost"
+          ],
+          "port": "44306",
+          "path": [
+            "api",
+            "country",
+            "3"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete Country",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value":
+                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoidXNlcjRAZXhhbXBsZS5jb20iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJVc2VyIiwiZXhwIjoxNjMyMDc5Mzc2LCJpc3MiOiJIb3RlbExpc3RpbmdBUEkifQ.1kSlmMppRm-yGSYYu3p8IX9jxQF-pyyfcBbzDwsGB5Q",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "https://localhost:44306/api/country/3",
+          "protocol": "https",
+          "host": [
+            "localhost"
+          ],
+          "port": "44306",
+          "path": [
+            "api",
+            "country",
+            "3"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
 }

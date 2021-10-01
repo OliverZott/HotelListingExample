@@ -1,16 +1,16 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using AutoMapper;
+using HotelListingExample.Core.DTOs;
+using HotelListingExample.Core.Repository;
 using HotelListingExample.Data;
-using HotelListingExample.IRepository;
-using HotelListingExample.Models;
 using Marvin.Cache.Headers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace HotelListingExample.Controllers
 {
@@ -30,7 +30,7 @@ namespace HotelListingExample.Controllers
         }
 
         [HttpGet]
-        [ResponseCache(Duration = 60)]  // can be removed after HttpCacheHeader in ServiceExtensions is configured!
+        [ResponseCache(Duration = 60)] // can be removed after HttpCacheHeader in ServiceExtensions is configured!
         //[ResponseCache(CacheProfileName = "120SecondsDuration")]
         [ProducesResponseType(200)] // For swaggger documentation
         [ProducesResponseType(StatusCodes.Status500InternalServerError)] // usage of response type CONSTANTS
@@ -50,14 +50,15 @@ namespace HotelListingExample.Controllers
         }
 
         [HttpGet("{id:int}", Name = "GetAHotel")]
-        [HttpCacheExpiration(CacheLocation = CacheLocation.Public, MaxAge = 65)]  // Override global caching configuration (serviceextensions)]
+        [HttpCacheExpiration(CacheLocation = CacheLocation.Public,
+            MaxAge = 65)] // Override global caching configuration (serviceextensions)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetHotel(int id)
         {
             try
             {
-                var hotel = await _unitOfWork.Hotels.Get(q => q.Id == id, include: q => q.Include(x => x.Country));
+                var hotel = await _unitOfWork.Hotels.Get(q => q.Id == id, q => q.Include(x => x.Country));
                 var result = _mapper.Map<HotelDto>(hotel);
                 return Ok(result);
             }
@@ -84,7 +85,7 @@ namespace HotelListingExample.Controllers
             try
             {
                 var hotel = _mapper.Map<Hotel>(createHotelDto);
-                await _unitOfWork.Hotels.Insert(hotel);  // all checks must be done before (e.g. model is valid above)
+                await _unitOfWork.Hotels.Insert(hotel); // all checks must be done before (e.g. model is valid above)
                 await _unitOfWork.Save();
                 //return StatusCode(201, "Created ");
                 return CreatedAtRoute("GetAHotel", new { id = hotel.Id }, hotel);
@@ -120,7 +121,8 @@ namespace HotelListingExample.Controllers
                     _logger.LogError($"Invalid UPDATE attempt in {nameof(UpdateHotel)}");
                     return BadRequest(ModelState);
                 }
-                _mapper.Map(updateHotelDto, hotel);  // mapping on existing object (instead of creating new object)
+
+                _mapper.Map(updateHotelDto, hotel); // mapping on existing object (instead of creating new object)
                 _unitOfWork.Hotels.Update(hotel);
                 await _unitOfWork.Save();
                 return NoContent();
@@ -154,6 +156,7 @@ namespace HotelListingExample.Controllers
                     _logger.LogError($"{nameof(DeleteHotel)}: No entity with id {id} was found.");
                     return NotFound("Damn, didn't find that hotel :(");
                 }
+
                 await _unitOfWork.Hotels.Delete(id);
                 await _unitOfWork.Save();
                 return Ok($"MUAHAHAHA, did delete hotel with id {id}.");
@@ -163,8 +166,6 @@ namespace HotelListingExample.Controllers
                 _logger.LogError(e, $"Something went wrong in {nameof(DeleteHotel)}. Error message: {e.Message}");
                 return StatusCode(500, "Internal Server Error. Sorry :)");
             }
-
         }
-
     }
 }

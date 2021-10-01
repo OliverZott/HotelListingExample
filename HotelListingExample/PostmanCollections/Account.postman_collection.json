@@ -1,69 +1,70 @@
 {
-	"info": {
-		"_postman_id": "68883110-30b9-4691-8a82-b2af7480df3a",
-		"name": "Account",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-	},
-	"item": [
-		{
-			"name": "Register",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"email\": \"user3@example.com\",\r\n  \"password\": \"P@ssword1\",\r\n  \"firstName\": \"user3\",\r\n  \"lastName\": \"string\",\r\n  \"phoneNumber\": \"string\",\r\n  \"roles\": [\r\n    \"User\"\r\n  ]\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "https://localhost:44306/api/account/register",
-					"protocol": "https",
-					"host": [
-						"localhost"
-					],
-					"port": "44306",
-					"path": [
-						"api",
-						"account",
-						"register"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Login",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"email\": \"user4@example.com\",\r\n  \"password\": \"P@ssword1\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "https://localhost:44306/api/account/login",
-					"protocol": "https",
-					"host": [
-						"localhost"
-					],
-					"port": "44306",
-					"path": [
-						"api",
-						"account",
-						"login"
-					]
-				}
-			},
-			"response": []
-		}
-	]
+  "info": {
+    "_postman_id": "68883110-30b9-4691-8a82-b2af7480df3a",
+    "name": "Account",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Register",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw":
+            "{\r\n  \"email\": \"user3@example.com\",\r\n  \"password\": \"P@ssword1\",\r\n  \"firstName\": \"user3\",\r\n  \"lastName\": \"string\",\r\n  \"phoneNumber\": \"string\",\r\n  \"roles\": [\r\n    \"User\"\r\n  ]\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://localhost:44306/api/account/register",
+          "protocol": "https",
+          "host": [
+            "localhost"
+          ],
+          "port": "44306",
+          "path": [
+            "api",
+            "account",
+            "register"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Login",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"email\": \"user4@example.com\",\r\n  \"password\": \"P@ssword1\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://localhost:44306/api/account/login",
+          "protocol": "https",
+          "host": [
+            "localhost"
+          ],
+          "port": "44306",
+          "path": [
+            "api",
+            "account",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
 }

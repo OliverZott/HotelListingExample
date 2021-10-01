@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-
 namespace HotelListingExample.Data
 {
     // Bridge between Entities and actual database
@@ -13,7 +12,8 @@ namespace HotelListingExample.Data
     {
         private readonly IEntityTypeConfiguration<IdentityRole> _configuration;
 
-        public DatabaseContext(DbContextOptions dbContextOptions, IEntityTypeConfiguration<IdentityRole> configuration) : base(dbContextOptions)
+        public DatabaseContext(DbContextOptions dbContextOptions, IEntityTypeConfiguration<IdentityRole> configuration)
+            : base(dbContextOptions)
         {
             _configuration = configuration;
         }
@@ -34,8 +34,6 @@ namespace HotelListingExample.Data
             modelBuilder.ApplyConfiguration(_configuration);
             // alternative with new instantiating
             // modelBuilder.ApplyConfiguration(new RoleConfiguration());
-
         }
-
     }
 }

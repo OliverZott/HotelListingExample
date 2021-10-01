@@ -1,6 +1,10 @@
-﻿using AspNetCoreRateLimit;
+﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Text;
+using AspNetCoreRateLimit;
+using HotelListingExample.Core.Models;
 using HotelListingExample.Data;
-using HotelListingExample.Models;
 using Marvin.Cache.Headers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -13,11 +17,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace HotelListingExample
+namespace HotelListingExample.Core
 {
     public static class ServiceExtensions
     {
@@ -49,34 +50,35 @@ namespace HotelListingExample
         public static void ConfigureJwt(this IServiceCollection services, IConfiguration configuration)
         {
             var jwtSettings = configuration.GetSection("Jwt");
-            var key = Environment.GetEnvironmentVariable("KEY");    // the env-var, set in windows by 'setx KEY "..." /m'
+            var key = Environment.GetEnvironmentVariable("KEY"); // the env-var, set in windows by 'setx KEY "..." /m'
 
             services
                 .AddAuthentication(o =>
-                    {
-                        o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme; // if someone trying to authenticate --> check for bearer token
-                        o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                    })
+                {
+                    o.DefaultAuthenticateScheme =
+                        JwtBearerDefaults
+                            .AuthenticationScheme; // if someone trying to authenticate --> check for bearer token
+                    o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
                 .AddJwtBearer(o =>
+                {
+                    o.TokenValidationParameters = new TokenValidationParameters
                     {
-                        o.TokenValidationParameters = new TokenValidationParameters
-                        {
-                            ValidateIssuer = true,
-                            ValidateLifetime = true,
-                            ValidateAudience = false,
-                            ValidateIssuerSigningKey = true,
-                            ValidIssuer = jwtSettings.GetSection("Issuer").Value,
-                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key))
-                        };
-                    });
+                        ValidateIssuer = true,
+                        ValidateLifetime = true,
+                        ValidateAudience = false,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = jwtSettings.GetSection("Issuer").Value,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key))
+                    };
+                });
         }
 
 
         /// <summary>
-        /// Customized Exception handling:
-        /// https://docs.microsoft.com/en-us/aspnet/core/fundamentals/error-handling?view=aspnetcore-5.0
-        /// https://www.tutorialsteacher.com/core/aspnet-core-exception-handling
-        /// 
+        ///     Customized Exception handling:
+        ///     https://docs.microsoft.com/en-us/aspnet/core/fundamentals/error-handling?view=aspnetcore-5.0
+        ///     https://www.tutorialsteacher.com/core/aspnet-core-exception-handling
         /// </summary>
         /// <param name="app"></param>
         public static void ConfigureExceptionHandler(this IApplicationBuilder app)
@@ -117,7 +119,6 @@ namespace HotelListingExample
                 //    - route can stay the same
                 //    - client can just add header
                 opt.ApiVersionReader = new HeaderApiVersionReader("api-version");
-
             });
         }
 
@@ -125,16 +126,12 @@ namespace HotelListingExample
         {
             services.AddResponseCaching();
             services.AddHttpCacheHeaders(
-                (expirationOpt) =>
+                expirationOpt =>
                 {
                     expirationOpt.MaxAge = 120;
                     expirationOpt.CacheLocation = CacheLocation.Private;
                 },
-                (validationOpt) =>
-                {
-                    validationOpt.MustRevalidate = true;
-                });
-
+                validationOpt => { validationOpt.MustRevalidate = true; });
         }
 
 
@@ -142,18 +139,15 @@ namespace HotelListingExample
         {
             var rateLimitRules = new List<RateLimitRule>
             {
-                new RateLimitRule
+                new()
                 {
-                    Endpoint = "*",  // Every single endpoint
+                    Endpoint = "*", // Every single endpoint
                     Limit = 1,
                     Period = "5s"
                 }
             };
 
-            services.Configure<IpRateLimitOptions>(opt =>
-            {
-                opt.GeneralRules = rateLimitRules;
-            });
+            services.Configure<IpRateLimitOptions>(opt => { opt.GeneralRules = rateLimitRules; });
 
             // Code needed to support library.
             services.AddSingleton<IRateLimitCounterStore, MemoryCacheRateLimitCounterStore>();
@@ -164,6 +158,12 @@ namespace HotelListingExample
             // https://stackoverflow.com/questions/68888612/unable-to-resolve-service-for-type-aspnetcoreratelimit-iprocessingstrategy-whi
             services.AddSingleton<IProcessingStrategy, AsyncKeyLockProcessingStrategy>();
         }
-    }
 
+
+        public static void ConfigureAutoMapper(this IServiceCollection services)
+        {
+            //services.AddAutoMapper(typeof(MapperInitializer));  // works as well, but maybe we use multiple mapper initializer.
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
+        }
+    }
 }

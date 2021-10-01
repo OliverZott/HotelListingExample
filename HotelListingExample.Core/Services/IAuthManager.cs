@@ -1,7 +1,7 @@
-﻿using HotelListingExample.Models;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using HotelListingExample.Core.DTOs;
 
-namespace HotelListingExample.Services
+namespace HotelListingExample.Core.Services
 {
     public interface IAuthManager
     {

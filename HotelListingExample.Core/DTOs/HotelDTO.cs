@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace HotelListingExample.Models
+namespace HotelListingExample.Core.DTOs
 {
     public class CreateHotelDto
     {
@@ -12,9 +12,7 @@ namespace HotelListingExample.Models
         [MaxLength(250, ErrorMessage = "Hotel name is too long.")]
         public string Address { get; set; }
 
-        [Required]
-        [Range(1, 5)]
-        public double Rating { get; set; }
+        [Required] [Range(1, 5)] public double Rating { get; set; }
 
         //[Required]
         public int CountryId { get; set; }
@@ -22,13 +20,13 @@ namespace HotelListingExample.Models
 
     public class UpdateHotelDto : CreateHotelDto
     {
-
     }
 
     public class HotelDto : CreateHotelDto
     {
         public int Id { get; set; }
 
-        public CreateCountryDto Country { get; set; }  // So a Hotel by id wont return countries with hotels with countries (nested) ...
+        public CreateCountryDto
+            Country { get; set; } // So a Hotel by id wont return countries with hotels with countries (nested) ...
     }
 }

@@ -1,8 +1,8 @@
+using System;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
-using System;
 
 namespace HotelListingExample
 {
@@ -12,17 +12,15 @@ namespace HotelListingExample
         {
             Log.Logger = new LoggerConfiguration()
                 .WriteTo.File(
-                    path: "C:\\Users\\HAL9000\\source\\repos\\HotelListingExample\\HotelListingExample\\Logs\\log-.log",
-                    outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
+                    "C:\\Users\\HAL9000\\source\\repos\\HotelListingExample\\HotelListingExample\\Logs\\log-.log",
+                    outputTemplate:
+                    "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
                     rollingInterval: RollingInterval.Day,
                     restrictedToMinimumLevel: LogEventLevel.Information
                 ).CreateLogger();
 
             // guarding clause
-            if (Log.Logger is null)
-            {
-                return;
-            }
+            if (Log.Logger is null) return;
 
             try
             {
@@ -37,15 +35,13 @@ namespace HotelListingExample
             {
                 Log.CloseAndFlush();
             }
-
         }
 
-        private static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
+        private static IHostBuilder CreateHostBuilder(string[] args)
+        {
+            return Host.CreateDefaultBuilder(args)
                 .UseSerilog()
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
+                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
+        }
     }
 }

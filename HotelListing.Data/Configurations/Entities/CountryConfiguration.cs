@@ -1,5 +1,4 @@
-﻿using HotelListingExample.Data;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace HotelListingExample.Data.Configurations.Entities
@@ -14,7 +13,6 @@ namespace HotelListingExample.Data.Configurations.Entities
                     Id = 1,
                     Name = "Jamaica",
                     ShortName = "JM"
-
                 },
                 new Country
                 {

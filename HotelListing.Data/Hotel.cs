@@ -10,8 +10,9 @@ namespace HotelListingExample.Data
         public double Rating { get; set; }
 
         // In repository the "includes" parameter can be used for included details
-        [ForeignKey(nameof(Country))]           // Data annotation in []; name of FK is in this case the name of the class
-        public int CountryId { get; set; }      // hard reference, will be same as the corresponding country id
-        public Country Country { get; set; }    // this is used to do: "Hotel.Country.PropertyName"
+        [ForeignKey(nameof(Country))] // Data annotation in []; name of FK is in this case the name of the class
+        public int CountryId { get; set; } // hard reference, will be same as the corresponding country id
+
+        public Country Country { get; set; } // this is used to do: "Hotel.Country.PropertyName"
     }
 }

@@ -1,22 +1,22 @@
-﻿using HotelListingExample.Data;
-using HotelListingExample.Models;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using HotelListingExample.Core.DTOs;
+using HotelListingExample.Data;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 
-namespace HotelListingExample.Services
+namespace HotelListingExample.Core.Services
 {
     public class AuthManager : IAuthManager
     {
+        private readonly IConfiguration _configuration;
 
         private readonly UserManager<ApiUser> _userManager;
-        private readonly IConfiguration _configuration;
         private ApiUser _user;
 
 
@@ -30,7 +30,7 @@ namespace HotelListingExample.Services
         public async Task<bool> ValidateUser(LoginUserDto userDto)
         {
             _user = await _userManager.FindByNameAsync(userDto.Email);
-            return (_user != null && await _userManager.CheckPasswordAsync(_user, userDto.Password));
+            return _user != null && await _userManager.CheckPasswordAsync(_user, userDto.Password);
         }
 
         public async Task<string> CreateToken()
@@ -40,7 +40,6 @@ namespace HotelListingExample.Services
             var token = GenerateToken(signingCredentials, claims);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
-
         }
 
         // JWT contains issuer validation!!
@@ -51,14 +50,13 @@ namespace HotelListingExample.Services
             var expirationDateTime = DateTime.Now.AddMinutes(Convert.ToInt32(jwtSettings.GetSection("lifetime").Value));
 
             var token = new JwtSecurityToken(
-                issuer: jwtSettings.GetSection("Issuer").Value,
+                jwtSettings.GetSection("Issuer").Value,
                 claims: claims,
                 expires: expirationDateTime,
                 signingCredentials: signingCredentials
             );
 
             return token;
-
         }
 
         private static SigningCredentials GetSigningCredentials()
@@ -74,17 +72,13 @@ namespace HotelListingExample.Services
         {
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, _user.UserName)
+                new(ClaimTypes.Name, _user.UserName)
             };
 
             var roles = await _userManager.GetRolesAsync(_user);
-            foreach (var role in roles)
-            {
-                claims.Add(new Claim(ClaimTypes.Role, role));
-            }
+            foreach (var role in roles) claims.Add(new Claim(ClaimTypes.Role, role));
 
             return claims;
         }
-
     }
 }

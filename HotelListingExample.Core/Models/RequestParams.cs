@@ -1,4 +1,4 @@
-﻿namespace HotelListingExample.Models
+﻿namespace HotelListingExample.Core.Models
 {
     public class RequestParams
     {
@@ -7,14 +7,12 @@
         private int _pageSize = 2;
 
 
-        public int PageNumber { get; set; } = 1;    // Default value!
+        public int PageNumber { get; set; } = 1; // Default value!
 
         public int PageSize
         {
             get => _pageSize;
-            set => _pageSize = (value > maxPageSize) ? maxPageSize : value;
+            set => _pageSize = value > maxPageSize ? maxPageSize : value;
         }
-
-
     }
 }

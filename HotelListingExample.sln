@@ -7,6 +7,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotelListingExample", "Hote
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelListingExample.Data", "HotelListing.Data\HotelListingExample.Data.csproj", "{676321B7-B57B-4E2D-B574-C5CD07BD5981}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelListingExample.Core", "HotelListingExample.Core\HotelListingExample.Core.csproj", "{07EA6198-6D3E-4C05-BE19-BD71EB51B683}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{89C3F67B-3362-4D8E-89E6-79DACAD9A528}"
+	ProjectSection(SolutionItems) = preProject
+		HotelListingExample\PostmanCollections\Account.postman_collection.json = HotelListingExample\PostmanCollections\Account.postman_collection.json
+		HotelListingExample\PostmanCollections\Country.postman_collection.json = HotelListingExample\PostmanCollections\Country.postman_collection.json
+		HotelListingExample\PostmanCollections\Hotel.postman_collection.json = HotelListingExample\PostmanCollections\Hotel.postman_collection.json
+		README.md = README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +31,10 @@ Global
 		{676321B7-B57B-4E2D-B574-C5CD07BD5981}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{676321B7-B57B-4E2D-B574-C5CD07BD5981}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{676321B7-B57B-4E2D-B574-C5CD07BD5981}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07EA6198-6D3E-4C05-BE19-BD71EB51B683}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07EA6198-6D3E-4C05-BE19-BD71EB51B683}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07EA6198-6D3E-4C05-BE19-BD71EB51B683}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07EA6198-6D3E-4C05-BE19-BD71EB51B683}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

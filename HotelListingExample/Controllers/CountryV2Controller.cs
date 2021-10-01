@@ -1,8 +1,8 @@
-﻿using HotelListingExample.Data;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using HotelListingExample.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace HotelListingExample.Controllers
 {
@@ -42,7 +42,6 @@ namespace HotelListingExample.Controllers
         // Difference to other controller version:
         //      - No usage of repository
         //      - returning entity without mapping on DTO!
-
 
 
         [HttpGet("{id:int}")]

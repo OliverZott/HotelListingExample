@@ -1,8 +1,8 @@
-﻿using HotelListingExample.Data;
-using System;
+﻿using System;
 using System.Threading.Tasks;
+using HotelListingExample.Data;
 
-namespace HotelListingExample.IRepository
+namespace HotelListingExample.Core.Repository
 {
     // Service class that registers all versions of generic repository implementation 
     // for generic class T.
