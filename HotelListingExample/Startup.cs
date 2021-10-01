@@ -1,7 +1,7 @@
 using AspNetCoreRateLimit;
 using HotelListingExample.Configurations;
-using HotelListingExample.Configurations.Entities;
 using HotelListingExample.Data;
+using HotelListingExample.Data.Configurations.Entities;
 using HotelListingExample.IRepository;
 using HotelListingExample.Repository;
 using HotelListingExample.Services;
