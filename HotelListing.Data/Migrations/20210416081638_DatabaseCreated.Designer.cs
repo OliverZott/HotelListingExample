@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace HotelListingExample.Migrations
+namespace HotelListingExample.Data.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
     [Migration("20210416081638_DatabaseCreated")]

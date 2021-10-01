@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 using System;
 
-namespace HotelListingExample.Migrations
+namespace HotelListingExample.Data.Migrations
 {
     public partial class AddedIdentity : Migration
     {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace HotelListingExample.Migrations
+namespace HotelListingExample.Data.Migrations
 {
     public partial class DatabaseCreated : Migration
     {
